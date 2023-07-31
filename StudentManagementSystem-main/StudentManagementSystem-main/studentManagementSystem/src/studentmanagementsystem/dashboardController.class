@@ -1,0 +1,1070 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package studentmanagementsystem;
+
+import java.io.File;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+public class dashboardController implements Initializable {
+   @FXML
+   private AnchorPane main_form;
+   @FXML
+   private Button close;
+   @FXML
+   private Button minimize;
+   @FXML
+   private Label username;
+   @FXML
+   private Button home_btn;
+   @FXML
+   private Button addStudents_btn;
+   @FXML
+   private Button availableCourse_btn;
+   @FXML
+   private Button studentGrade_btn;
+   @FXML
+   private Button logout;
+   @FXML
+   private AnchorPane home_form;
+   @FXML
+   private Label home_totalEnrolled;
+   @FXML
+   private Label home_totalFemale;
+   @FXML
+   private Label home_totalMale;
+   @FXML
+   private BarChart<?, ?> home_totalEnrolledChart;
+   @FXML
+   private AreaChart<?, ?> home_totalFemaleChart;
+   @FXML
+   private LineChart<?, ?> home_totalMaleChart;
+   @FXML
+   private AnchorPane addStudents_form;
+   @FXML
+   private TextField addStudents_search;
+   @FXML
+   private TableView<studentData> addStudents_tableView;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_studentNum;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_year;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_course;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_firstName;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_lastName;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_gender;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_birth;
+   @FXML
+   private TableColumn<studentData, String> addStudents_col_status;
+   @FXML
+   private TextField addStudents_studentNum;
+   @FXML
+   private ComboBox<?> addStudents_year;
+   @FXML
+   private ComboBox<?> addStudents_course;
+   @FXML
+   private TextField addStudents_firstName;
+   @FXML
+   private TextField addStudents_lastName;
+   @FXML
+   private DatePicker addStudents_birth;
+   @FXML
+   private ComboBox<?> addStudents_status;
+   @FXML
+   private ComboBox<?> addStudents_gender;
+   @FXML
+   private ImageView addStudents_imageView;
+   @FXML
+   private Button addStudents_insertBtn;
+   @FXML
+   private Button addStudents_addBtn;
+   @FXML
+   private Button addStudents_updateBtn;
+   @FXML
+   private Button addStudents_deleteBtn;
+   @FXML
+   private Button addStudents_clearBtn;
+   @FXML
+   private AnchorPane availableCourse_form;
+   @FXML
+   private TextField availableCourse_course;
+   @FXML
+   private TextField availableCourse_description;
+   @FXML
+   private TextField availableCourse_degree;
+   @FXML
+   private Button availableCourse_addBtn;
+   @FXML
+   private Button availableCourse_updateBtn;
+   @FXML
+   private Button availableCourse_clearBtn;
+   @FXML
+   private Button availableCourse_deleteBtn;
+   @FXML
+   private TableView<courseData> availableCourse_tableView;
+   @FXML
+   private TableColumn<courseData, String> availableCourse_col_course;
+   @FXML
+   private TableColumn<courseData, String> availableCourse_col_description;
+   @FXML
+   private TableColumn<courseData, String> availableCourse_col_degree;
+   @FXML
+   private AnchorPane studentGrade_form;
+   @FXML
+   private TextField studentGrade_studentNum;
+   @FXML
+   private Label studentGrade_year;
+   @FXML
+   private Label studentGrade_course;
+   @FXML
+   private TextField studentGrade_firstSem;
+   @FXML
+   private TextField studentGrade_secondSem;
+   @FXML
+   private Button studentGrade_updateBtn;
+   @FXML
+   private Button studentGrade_clearBtn;
+   @FXML
+   private TableView<studentData> studentGrade_tableView;
+   @FXML
+   private TableColumn<studentData, String> studentGrade_col_studentNum;
+   @FXML
+   private TableColumn<studentData, String> studentGrade_col_year;
+   @FXML
+   private TableColumn<studentData, String> studentGrade_col_course;
+   @FXML
+   private TableColumn<studentData, String> studentGrade_col_firstSem;
+   @FXML
+   private TableColumn<studentData, String> studentGrade_col_secondSem;
+   @FXML
+   private TableColumn<studentData, String> studentGrade_col_final;
+   @FXML
+   private TextField studentGrade_search;
+   private Connection connect;
+   private PreparedStatement prepare;
+   private Statement statement;
+   private ResultSet result;
+   private Image image;
+   private String[] yearList = new String[]{"First Year", "Second Year", "Third Year", "Fourth Year"};
+   private String[] genderList = new String[]{"Male", "Female", "Others"};
+   private String[] statusList = new String[]{"Enrolled", "Not Enrolled", "Inactive"};
+   private ObservableList<studentData> addStudentsListD;
+   private ObservableList<courseData> availableCourseList;
+   private ObservableList<studentData> studentGradesList;
+   private double x = 0.0;
+   private double y = 0.0;
+
+   public dashboardController() {
+   }
+
+   public void homeDisplayTotalEnrolledStudents() {
+      String sql = "SELECT COUNT(id) FROM student";
+      this.connect = database.connectDb();
+      int countEnrolled = 0;
+
+      try {
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+         if (this.result.next()) {
+            countEnrolled = this.result.getInt("COUNT(id)");
+         }
+
+         this.home_totalEnrolled.setText(String.valueOf(countEnrolled));
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+
+   }
+
+   public void homeDisplayFemaleEnrolled() {
+      String sql = "SELECT COUNT(id) FROM student WHERE gender = 'Female' and status = 'Enrolled'";
+      this.connect = database.connectDb();
+
+      try {
+         int countFemale = 0;
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+         if (this.result.next()) {
+            countFemale = this.result.getInt("COUNT(id)");
+         }
+
+         this.home_totalFemale.setText(String.valueOf(countFemale));
+      } catch (Exception var3) {
+         var3.printStackTrace();
+      }
+
+   }
+
+   public void homeDisplayMaleEnrolled() {
+      String sql = "SELECT COUNT(id) FROM student WHERE gender = 'Male' and status = 'Enrolled'";
+      this.connect = database.connectDb();
+
+      try {
+         int countMale = 0;
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+         if (this.result.next()) {
+            countMale = this.result.getInt("COUNT(id)");
+         }
+
+         this.home_totalMale.setText(String.valueOf(countMale));
+      } catch (Exception var3) {
+         var3.printStackTrace();
+      }
+
+   }
+
+   public void homeDisplayTotalEnrolledChart() {
+      this.home_totalEnrolledChart.getData().clear();
+      String sql = "SELECT date, COUNT(id) FROM student WHERE status = 'Enrolled' GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 5";
+      this.connect = database.connectDb();
+
+      try {
+         XYChart.Series chart = new XYChart.Series();
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+
+         while(this.result.next()) {
+            chart.getData().add(new XYChart.Data(this.result.getString(1), this.result.getInt(2)));
+         }
+
+         this.home_totalEnrolledChart.getData().add(chart);
+      } catch (Exception var3) {
+         var3.printStackTrace();
+      }
+
+   }
+
+   public void homeDisplayFemaleEnrolledChart() {
+      this.home_totalFemaleChart.getData().clear();
+      String sql = "SELECT date, COUNT(id) FROM student WHERE status = 'Enrolled' and gender = 'Female' GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 5";
+      this.connect = database.connectDb();
+
+      try {
+         XYChart.Series chart = new XYChart.Series();
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+
+         while(this.result.next()) {
+            chart.getData().add(new XYChart.Data(this.result.getString(1), this.result.getInt(2)));
+         }
+
+         this.home_totalFemaleChart.getData().add(chart);
+      } catch (Exception var3) {
+         var3.printStackTrace();
+      }
+
+   }
+
+   public void homeDisplayEnrolledMaleChart() {
+      this.home_totalMaleChart.getData().clear();
+      String sql = "SELECT date, COUNT(id) FROM student WHERE status = 'Enrolled' and gender = 'Male' GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 5";
+      this.connect = database.connectDb();
+
+      try {
+         XYChart.Series chart = new XYChart.Series();
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+
+         while(this.result.next()) {
+            chart.getData().add(new XYChart.Data(this.result.getString(1), this.result.getInt(2)));
+         }
+
+         this.home_totalMaleChart.getData().add(chart);
+      } catch (Exception var3) {
+         var3.printStackTrace();
+      }
+
+   }
+
+   public void addStudentsAdd() {
+      String insertData = "INSERT INTO student (studentNum,year,course,firstName,lastName,gender,birth,status,image,date) VALUES(?,?,?,?,?,?,?,?,?,?)";
+      this.connect = database.connectDb();
+
+      try {
+         Alert alert;
+         if (!this.addStudents_studentNum.getText().isEmpty() && this.addStudents_year.getSelectionModel().getSelectedItem() != null && this.addStudents_course.getSelectionModel().getSelectedItem() != null && !this.addStudents_firstName.getText().isEmpty() && !this.addStudents_lastName.getText().isEmpty() && this.addStudents_gender.getSelectionModel().getSelectedItem() != null && this.addStudents_birth.getValue() != null && this.addStudents_status.getSelectionModel().getSelectedItem() != null && getData.path != null && getData.path != "") {
+            String checkData = "SELECT studentNum FROM student WHERE studentNum = '" + this.addStudents_studentNum.getText() + "'";
+            this.statement = this.connect.createStatement();
+            this.result = this.statement.executeQuery(checkData);
+            if (this.result.next()) {
+               alert = new Alert(AlertType.ERROR);
+               alert.setTitle("Error Message");
+               alert.setHeaderText((String)null);
+               alert.setContentText("Student #" + this.addStudents_studentNum.getText() + " was already exist!");
+               alert.showAndWait();
+            } else {
+               this.prepare = this.connect.prepareStatement(insertData);
+               this.prepare.setString(1, this.addStudents_studentNum.getText());
+               this.prepare.setString(2, (String)this.addStudents_year.getSelectionModel().getSelectedItem());
+               this.prepare.setString(3, (String)this.addStudents_course.getSelectionModel().getSelectedItem());
+               this.prepare.setString(4, this.addStudents_firstName.getText());
+               this.prepare.setString(5, this.addStudents_lastName.getText());
+               this.prepare.setString(6, (String)this.addStudents_gender.getSelectionModel().getSelectedItem());
+               this.prepare.setString(7, String.valueOf(this.addStudents_birth.getValue()));
+               this.prepare.setString(8, (String)this.addStudents_status.getSelectionModel().getSelectedItem());
+               String uri = getData.path;
+               uri = uri.replace("\\", "\\\\");
+               this.prepare.setString(9, uri);
+               Date date = new Date();
+               java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+               this.prepare.setString(10, String.valueOf(sqlDate));
+               this.prepare.executeUpdate();
+               String insertStudentGrade = "INSERT INTO student_grade (studentNum,year,course,first_sem,second_sem,final) VALUES(?,?,?,?,?,?)";
+               this.prepare = this.connect.prepareStatement(insertStudentGrade);
+               this.prepare.setString(1, this.addStudents_studentNum.getText());
+               this.prepare.setString(2, (String)this.addStudents_year.getSelectionModel().getSelectedItem());
+               this.prepare.setString(3, (String)this.addStudents_course.getSelectionModel().getSelectedItem());
+               this.prepare.setString(4, "0");
+               this.prepare.setString(5, "0");
+               this.prepare.setString(6, "0");
+               this.prepare.executeUpdate();
+               alert = new Alert(AlertType.INFORMATION);
+               alert.setTitle("Information Message");
+               alert.setHeaderText((String)null);
+               alert.setContentText("Successfully Added!");
+               alert.showAndWait();
+               this.addStudentsShowListData();
+               this.addStudentsClear();
+            }
+         } else {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+         }
+      } catch (Exception var8) {
+         var8.printStackTrace();
+      }
+
+   }
+
+   public void addStudentsUpdate() {
+      String uri = getData.path;
+      uri = uri.replace("\\", "\\\\");
+      String updateData = "UPDATE student SET year = '" + this.addStudents_year.getSelectionModel().getSelectedItem() + "', course = '" + this.addStudents_course.getSelectionModel().getSelectedItem() + "', firstName = '" + this.addStudents_firstName.getText() + "', lastName = '" + this.addStudents_lastName.getText() + "', gender = '" + this.addStudents_gender.getSelectionModel().getSelectedItem() + "', birth = '" + this.addStudents_birth.getValue() + "', status = '" + this.addStudents_status.getSelectionModel().getSelectedItem() + "', image = '" + uri + "' WHERE studentNum = '" + this.addStudents_studentNum.getText() + "'";
+      this.connect = database.connectDb();
+
+      try {
+         Alert alert;
+         if (!this.addStudents_studentNum.getText().isEmpty() && this.addStudents_year.getSelectionModel().getSelectedItem() != null && this.addStudents_course.getSelectionModel().getSelectedItem() != null && !this.addStudents_firstName.getText().isEmpty() && !this.addStudents_lastName.getText().isEmpty() && this.addStudents_gender.getSelectionModel().getSelectedItem() != null && this.addStudents_birth.getValue() != null && this.addStudents_status.getSelectionModel().getSelectedItem() != null && getData.path != null && getData.path != "") {
+            alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Are you sure you want to UPDATE Student #" + this.addStudents_studentNum.getText() + "?");
+            Optional<ButtonType> option = alert.showAndWait();
+            if (!((ButtonType)option.get()).equals(ButtonType.OK)) {
+               return;
+            }
+
+            this.statement = this.connect.createStatement();
+            this.statement.executeUpdate(updateData);
+            alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Successfully Updated!");
+            alert.showAndWait();
+            this.addStudentsShowListData();
+            this.addStudentsClear();
+         } else {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+         }
+      } catch (Exception var5) {
+         var5.printStackTrace();
+      }
+
+   }
+
+   public void addStudentsDelete() {
+      String deleteData = "DELETE FROM student WHERE studentNum = '" + this.addStudents_studentNum.getText() + "'";
+      this.connect = database.connectDb();
+
+      try {
+         Alert alert;
+         if (!this.addStudents_studentNum.getText().isEmpty() && this.addStudents_year.getSelectionModel().getSelectedItem() != null && this.addStudents_course.getSelectionModel().getSelectedItem() != null && !this.addStudents_firstName.getText().isEmpty() && !this.addStudents_lastName.getText().isEmpty() && this.addStudents_gender.getSelectionModel().getSelectedItem() != null && this.addStudents_birth.getValue() != null && this.addStudents_status.getSelectionModel().getSelectedItem() != null && getData.path != null && getData.path != "") {
+            alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Are you sure you want to DELETE Student #" + this.addStudents_studentNum.getText() + "?");
+            Optional<ButtonType> option = alert.showAndWait();
+            if (!((ButtonType)option.get()).equals(ButtonType.OK)) {
+               return;
+            }
+
+            this.statement = this.connect.createStatement();
+            this.statement.executeUpdate(deleteData);
+            String checkData = "SELECT studentNum FROM student_grade WHERE studentNum = '" + this.addStudents_studentNum.getText() + "'";
+            this.prepare = this.connect.prepareStatement(checkData);
+            this.result = this.prepare.executeQuery();
+            if (this.result.next()) {
+               String deleteGrade = "DELETE FROM student_grade WHERE studentNum = '" + this.addStudents_studentNum.getText() + "'";
+               this.statement = this.connect.createStatement();
+               this.statement.executeUpdate(deleteGrade);
+            }
+
+            alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Successfully Deleted!");
+            alert.showAndWait();
+            this.addStudentsShowListData();
+            this.addStudentsClear();
+         } else {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+         }
+      } catch (Exception var6) {
+         var6.printStackTrace();
+      }
+
+   }
+
+   public void addStudentsClear() {
+      this.addStudents_studentNum.setText("");
+      this.addStudents_year.getSelectionModel().clearSelection();
+      this.addStudents_course.getSelectionModel().clearSelection();
+      this.addStudents_firstName.setText("");
+      this.addStudents_lastName.setText("");
+      this.addStudents_gender.getSelectionModel().clearSelection();
+      this.addStudents_birth.setValue((Object)null);
+      this.addStudents_status.getSelectionModel().clearSelection();
+      this.addStudents_imageView.setImage((Image)null);
+      getData.path = "";
+   }
+
+   public void addStudentsInsertImage() {
+      FileChooser open = new FileChooser();
+      open.setTitle("Open Image File");
+      open.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image File", new String[]{"*jpg", "*png"}));
+      File file = open.showOpenDialog(this.main_form.getScene().getWindow());
+      if (file != null) {
+         this.image = new Image(file.toURI().toString(), 120.0, 149.0, false, true);
+         this.addStudents_imageView.setImage(this.image);
+         getData.path = file.getAbsolutePath();
+      }
+
+   }
+
+   public void addStudentsSearch() {
+      FilteredList<studentData> filter = new FilteredList(this.addStudentsListD, (e) -> {
+         return true;
+      });
+      this.addStudents_search.textProperty().addListener((Observable, oldValue, newValue) -> {
+         filter.setPredicate((predicateStudentData) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+               String searchKey = newValue.toLowerCase();
+               if (predicateStudentData.getStudentNum().toString().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getYear().toLowerCase().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getCourse().toLowerCase().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getFirstName().toLowerCase().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getLastName().toLowerCase().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getGender().toLowerCase().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getBirth().toString().contains(searchKey)) {
+                  return true;
+               } else {
+                  return predicateStudentData.getStatus().toLowerCase().contains(searchKey);
+               }
+            } else {
+               return true;
+            }
+         });
+      });
+      SortedList<studentData> sortList = new SortedList(filter);
+      sortList.comparatorProperty().bind(this.addStudents_tableView.comparatorProperty());
+      this.addStudents_tableView.setItems(sortList);
+   }
+
+   public void addStudentsYearList() {
+      List<String> yearL = new ArrayList();
+      String[] var2 = this.yearList;
+      int var3 = var2.length;
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         String data = var2[var4];
+         yearL.add(data);
+      }
+
+      ObservableList ObList = FXCollections.observableArrayList(yearL);
+      this.addStudents_year.setItems(ObList);
+   }
+
+   public void addStudentsCourseList() {
+      String listCourse = "SELECT * FROM course";
+      this.connect = database.connectDb();
+
+      try {
+         ObservableList listC = FXCollections.observableArrayList();
+         this.prepare = this.connect.prepareStatement(listCourse);
+         this.result = this.prepare.executeQuery();
+
+         while(this.result.next()) {
+            listC.add(this.result.getString("course"));
+         }
+
+         this.addStudents_course.setItems(listC);
+      } catch (Exception var3) {
+         var3.printStackTrace();
+      }
+
+   }
+
+   public void addStudentsGenderList() {
+      List<String> genderL = new ArrayList();
+      String[] var2 = this.genderList;
+      int var3 = var2.length;
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         String data = var2[var4];
+         genderL.add(data);
+      }
+
+      ObservableList ObList = FXCollections.observableArrayList(genderL);
+      this.addStudents_gender.setItems(ObList);
+   }
+
+   public void addStudentsStatusList() {
+      List<String> statusL = new ArrayList();
+      String[] var2 = this.statusList;
+      int var3 = var2.length;
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         String data = var2[var4];
+         statusL.add(data);
+      }
+
+      ObservableList ObList = FXCollections.observableArrayList(statusL);
+      this.addStudents_status.setItems(ObList);
+   }
+
+   public ObservableList<studentData> addStudentsListData() {
+      ObservableList<studentData> listStudents = FXCollections.observableArrayList();
+      String sql = "SELECT * FROM student";
+      this.connect = database.connectDb();
+
+      try {
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+
+         while(this.result.next()) {
+            studentData studentD = new studentData(this.result.getInt("studentNum"), this.result.getString("year"), this.result.getString("course"), this.result.getString("firstName"), this.result.getString("lastName"), this.result.getString("gender"), this.result.getDate("birth"), this.result.getString("status"), this.result.getString("image"));
+            listStudents.add(studentD);
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+
+      return listStudents;
+   }
+
+   public void addStudentsShowListData() {
+      this.addStudentsListD = this.addStudentsListData();
+      this.addStudents_col_studentNum.setCellValueFactory(new PropertyValueFactory("studentNum"));
+      this.addStudents_col_year.setCellValueFactory(new PropertyValueFactory("year"));
+      this.addStudents_col_course.setCellValueFactory(new PropertyValueFactory("course"));
+      this.addStudents_col_firstName.setCellValueFactory(new PropertyValueFactory("firstName"));
+      this.addStudents_col_lastName.setCellValueFactory(new PropertyValueFactory("lastName"));
+      this.addStudents_col_gender.setCellValueFactory(new PropertyValueFactory("gender"));
+      this.addStudents_col_birth.setCellValueFactory(new PropertyValueFactory("birth"));
+      this.addStudents_col_status.setCellValueFactory(new PropertyValueFactory("status"));
+      this.addStudents_tableView.setItems(this.addStudentsListD);
+   }
+
+   public void addStudentsSelect() {
+      studentData studentD = (studentData)this.addStudents_tableView.getSelectionModel().getSelectedItem();
+      int num = this.addStudents_tableView.getSelectionModel().getSelectedIndex();
+      if (num - 1 >= -1) {
+         this.addStudents_studentNum.setText(String.valueOf(studentD.getStudentNum()));
+         this.addStudents_firstName.setText(studentD.getFirstName());
+         this.addStudents_lastName.setText(studentD.getLastName());
+         this.addStudents_birth.setValue(LocalDate.parse(String.valueOf(studentD.getBirth())));
+         String uri = "file:" + studentD.getImage();
+         this.image = new Image(uri, 120.0, 149.0, false, true);
+         this.addStudents_imageView.setImage(this.image);
+         getData.path = studentD.getImage();
+      }
+   }
+
+   public void availableCourseAdd() {
+      String insertData = "INSERT INTO course (course,description,degree) VALUES(?,?,?)";
+      this.connect = database.connectDb();
+
+      try {
+         Alert alert;
+         if (!this.availableCourse_course.getText().isEmpty() && !this.availableCourse_description.getText().isEmpty() && !this.availableCourse_degree.getText().isEmpty()) {
+            String checkData = "SELECT course FROM course WHERE course = '" + this.availableCourse_course.getText() + "'";
+            this.statement = this.connect.createStatement();
+            this.result = this.statement.executeQuery(checkData);
+            if (this.result.next()) {
+               alert = new Alert(AlertType.ERROR);
+               alert.setTitle("Error Message");
+               alert.setHeaderText((String)null);
+               alert.setContentText("Course: " + this.availableCourse_course.getText() + " was already exist!");
+               alert.showAndWait();
+            } else {
+               this.prepare = this.connect.prepareStatement(insertData);
+               this.prepare.setString(1, this.availableCourse_course.getText());
+               this.prepare.setString(2, this.availableCourse_description.getText());
+               this.prepare.setString(3, this.availableCourse_degree.getText());
+               this.prepare.executeUpdate();
+               alert = new Alert(AlertType.INFORMATION);
+               alert.setTitle("Information Message");
+               alert.setHeaderText((String)null);
+               alert.setContentText("Successfully Added!");
+               alert.showAndWait();
+               this.availableCourseShowListData();
+               this.availableCourseClear();
+            }
+         } else {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+
+   }
+
+   public void availableCourseUpdate() {
+      String updateData = "UPDATE course SET description = '" + this.availableCourse_description.getText() + "', degree = '" + this.availableCourse_degree.getText() + "' WHERE course = '" + this.availableCourse_course.getText() + "'";
+      this.connect = database.connectDb();
+
+      try {
+         Alert alert;
+         if (!this.availableCourse_course.getText().isEmpty() && !this.availableCourse_description.getText().isEmpty() && !this.availableCourse_degree.getText().isEmpty()) {
+            alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Are you sure you want to UPDATE Course: " + this.availableCourse_course.getText() + "?");
+            Optional<ButtonType> option = alert.showAndWait();
+            if (!((ButtonType)option.get()).equals(ButtonType.OK)) {
+               return;
+            }
+
+            this.statement = this.connect.createStatement();
+            this.statement.executeUpdate(updateData);
+            alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Successfully Updated!");
+            alert.showAndWait();
+            this.availableCourseShowListData();
+            this.availableCourseClear();
+         } else {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+
+   }
+
+   public void availableCourseDelete() {
+      String deleteData = "DELETE FROM course WHERE course = '" + this.availableCourse_course.getText() + "'";
+      this.connect = database.connectDb();
+
+      try {
+         Alert alert;
+         if (!this.availableCourse_course.getText().isEmpty() && !this.availableCourse_description.getText().isEmpty() && !this.availableCourse_degree.getText().isEmpty()) {
+            alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Are you sure you want to DELETE Course: " + this.availableCourse_course.getText() + "?");
+            Optional<ButtonType> option = alert.showAndWait();
+            if (!((ButtonType)option.get()).equals(ButtonType.OK)) {
+               return;
+            }
+
+            this.statement = this.connect.createStatement();
+            this.statement.executeUpdate(deleteData);
+            alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Successfully Deleted!");
+            alert.showAndWait();
+            this.availableCourseShowListData();
+            this.availableCourseClear();
+         } else {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+
+   }
+
+   public void availableCourseClear() {
+      this.availableCourse_course.setText("");
+      this.availableCourse_description.setText("");
+      this.availableCourse_degree.setText("");
+   }
+
+   public ObservableList<courseData> availableCourseListData() {
+      ObservableList<courseData> listData = FXCollections.observableArrayList();
+      String sql = "SELECT * FROM course";
+      this.connect = database.connectDb();
+
+      try {
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+
+         while(this.result.next()) {
+            courseData courseD = new courseData(this.result.getString("course"), this.result.getString("description"), this.result.getString("degree"));
+            listData.add(courseD);
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+
+      return listData;
+   }
+
+   public void availableCourseShowListData() {
+      this.availableCourseList = this.availableCourseListData();
+      this.availableCourse_col_course.setCellValueFactory(new PropertyValueFactory("course"));
+      this.availableCourse_col_description.setCellValueFactory(new PropertyValueFactory("description"));
+      this.availableCourse_col_degree.setCellValueFactory(new PropertyValueFactory("degree"));
+      this.availableCourse_tableView.setItems(this.availableCourseList);
+   }
+
+   public void availableCourseSelect() {
+      courseData courseD = (courseData)this.availableCourse_tableView.getSelectionModel().getSelectedItem();
+      int num = this.availableCourse_tableView.getSelectionModel().getSelectedIndex();
+      if (num - 1 >= -1) {
+         this.availableCourse_course.setText(courseD.getCourse());
+         this.availableCourse_description.setText(courseD.getDescription());
+         this.availableCourse_degree.setText(courseD.getDegree());
+      }
+   }
+
+   public void studentGradesUpdate() {
+      double finalCheck1 = 0.0;
+      double finalCheck2 = 0.0;
+      String checkData = "SELECT * FROM student_grade WHERE studentNum = '" + this.studentGrade_studentNum.getText() + "'";
+      this.connect = database.connectDb();
+      double finalResult = 0.0;
+
+      try {
+         this.prepare = this.connect.prepareStatement(checkData);
+         this.result = this.prepare.executeQuery();
+         if (this.result.next()) {
+            finalCheck1 = this.result.getDouble("first_sem");
+            finalCheck2 = this.result.getDouble("second_sem");
+         }
+
+         if (finalCheck1 != 0.0 && finalCheck2 != 0.0) {
+            finalResult = Double.parseDouble(this.studentGrade_firstSem.getText()) + Double.parseDouble(this.studentGrade_secondSem.getText()) / 2.0;
+         } else {
+            finalResult = 0.0;
+         }
+
+         String updateData = "UPDATE student_grade SET  year = '" + this.studentGrade_year.getText() + "', course = '" + this.studentGrade_course.getText() + "', first_sem = '" + this.studentGrade_firstSem.getText() + "', second_sem = '" + this.studentGrade_secondSem.getText() + "', final = '" + finalResult + "' WHERE studentNum = '" + this.studentGrade_studentNum.getText() + "'";
+         Alert alert;
+         if (!this.studentGrade_studentNum.getText().isEmpty() && !this.studentGrade_year.getText().isEmpty() && !this.studentGrade_course.getText().isEmpty()) {
+            alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Are you sure you want to UPDATE Student #" + this.studentGrade_studentNum.getText() + "?");
+            Optional<ButtonType> option = alert.showAndWait();
+            if (!((ButtonType)option.get()).equals(ButtonType.OK)) {
+               return;
+            }
+
+            this.statement = this.connect.createStatement();
+            this.statement.executeUpdate(updateData);
+            alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Successfully Updated!");
+            alert.showAndWait();
+            this.studentGradesShowListData();
+         } else {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText((String)null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+         }
+      } catch (Exception var11) {
+         var11.printStackTrace();
+      }
+
+   }
+
+   public void studentGradesClear() {
+      this.studentGrade_studentNum.setText("");
+      this.studentGrade_year.setText("");
+      this.studentGrade_course.setText("");
+      this.studentGrade_firstSem.setText("");
+      this.studentGrade_secondSem.setText("");
+   }
+
+   public ObservableList<studentData> studentGradesListData() {
+      ObservableList<studentData> listData = FXCollections.observableArrayList();
+      String sql = "SELECT * FROM student_grade";
+      this.connect = database.connectDb();
+
+      try {
+         this.prepare = this.connect.prepareStatement(sql);
+         this.result = this.prepare.executeQuery();
+
+         while(this.result.next()) {
+            studentData studentD = new studentData(this.result.getInt("studentNum"), this.result.getString("year"), this.result.getString("course"), this.result.getDouble("first_sem"), this.result.getDouble("second_sem"), this.result.getDouble("final"));
+            listData.add(studentD);
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+
+      return listData;
+   }
+
+   public void studentGradesShowListData() {
+      this.studentGradesList = this.studentGradesListData();
+      this.studentGrade_col_studentNum.setCellValueFactory(new PropertyValueFactory("studentNum"));
+      this.studentGrade_col_year.setCellValueFactory(new PropertyValueFactory("year"));
+      this.studentGrade_col_course.setCellValueFactory(new PropertyValueFactory("course"));
+      this.studentGrade_col_firstSem.setCellValueFactory(new PropertyValueFactory("firstSem"));
+      this.studentGrade_col_secondSem.setCellValueFactory(new PropertyValueFactory("secondSem"));
+      this.studentGrade_col_final.setCellValueFactory(new PropertyValueFactory("finals"));
+      this.studentGrade_tableView.setItems(this.studentGradesList);
+   }
+
+   public void studentGradesSelect() {
+      studentData studentD = (studentData)this.studentGrade_tableView.getSelectionModel().getSelectedItem();
+      int num = this.studentGrade_tableView.getSelectionModel().getSelectedIndex();
+      if (num - 1 >= -1) {
+         this.studentGrade_studentNum.setText(String.valueOf(studentD.getStudentNum()));
+         this.studentGrade_year.setText(studentD.getYear());
+         this.studentGrade_course.setText(studentD.getCourse());
+         this.studentGrade_firstSem.setText(String.valueOf(studentD.getFirstSem()));
+         this.studentGrade_secondSem.setText(String.valueOf(studentD.getSecondSem()));
+      }
+   }
+
+   public void studentGradesSearch() {
+      FilteredList<studentData> filter = new FilteredList(this.studentGradesList, (e) -> {
+         return true;
+      });
+      this.studentGrade_search.textProperty().addListener((Observable, oldValue, newValue) -> {
+         filter.setPredicate((predicateStudentData) -> {
+            if (!newValue.isEmpty() && newValue != null) {
+               String searchKey = newValue.toLowerCase();
+               if (predicateStudentData.getStudentNum().toString().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getYear().toLowerCase().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getCourse().toLowerCase().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getFirstSem().toString().contains(searchKey)) {
+                  return true;
+               } else if (predicateStudentData.getSecondSem().toString().contains(searchKey)) {
+                  return true;
+               } else {
+                  return predicateStudentData.getFinals().toString().contains(searchKey);
+               }
+            } else {
+               return true;
+            }
+         });
+      });
+      SortedList<studentData> sortList = new SortedList(filter);
+      sortList.comparatorProperty().bind(this.studentGrade_tableView.comparatorProperty());
+      this.studentGrade_tableView.setItems(sortList);
+   }
+
+   public void logout() {
+      try {
+         Alert alert = new Alert(AlertType.CONFIRMATION);
+         alert.setTitle("Confirmation Message");
+         alert.setHeaderText((String)null);
+         alert.setContentText("Are you sure you want to logout?");
+         Optional<ButtonType> option = alert.showAndWait();
+         if (!((ButtonType)option.get()).equals(ButtonType.OK)) {
+            return;
+         }
+
+         this.logout.getScene().getWindow().hide();
+         Parent root = (Parent)FXMLLoader.load(this.getClass().getResource("FXMLDocument.fxml"));
+         Stage stage = new Stage();
+         Scene scene = new Scene(root);
+         root.setOnMousePressed((event) -> {
+            this.x = event.getSceneX();
+            this.y = event.getSceneY();
+         });
+         root.setOnMouseDragged((event) -> {
+            stage.setX(event.getScreenX() - this.x);
+            stage.setY(event.getScreenY() - this.y);
+            stage.setOpacity(0.8);
+         });
+         root.setOnMouseReleased((event) -> {
+            stage.setOpacity(1.0);
+         });
+         stage.initStyle(StageStyle.TRANSPARENT);
+         stage.setScene(scene);
+         stage.show();
+      } catch (Exception var6) {
+         var6.printStackTrace();
+      }
+
+   }
+
+   public void displayUsername() {
+      this.username.setText(getData.username);
+   }
+
+   public void defaultNav() {
+      this.home_btn.setStyle("-fx-background-color:linear-gradient(to bottom right, #3f82ae, #26bf7d);");
+   }
+
+   public void switchForm(ActionEvent event) {
+      if (event.getSource() == this.home_btn) {
+         this.home_form.setVisible(true);
+         this.addStudents_form.setVisible(false);
+         this.availableCourse_form.setVisible(false);
+         this.studentGrade_form.setVisible(false);
+         this.home_btn.setStyle("-fx-background-color:linear-gradient(to bottom right, #3f82ae, #26bf7d);");
+         this.addStudents_btn.setStyle("-fx-background-color:transparent");
+         this.availableCourse_btn.setStyle("-fx-background-color:transparent");
+         this.studentGrade_btn.setStyle("-fx-background-color:transparent");
+         this.homeDisplayTotalEnrolledStudents();
+         this.homeDisplayMaleEnrolled();
+         this.homeDisplayFemaleEnrolled();
+         this.homeDisplayEnrolledMaleChart();
+         this.homeDisplayFemaleEnrolledChart();
+         this.homeDisplayTotalEnrolledChart();
+      } else if (event.getSource() == this.addStudents_btn) {
+         this.home_form.setVisible(false);
+         this.addStudents_form.setVisible(true);
+         this.availableCourse_form.setVisible(false);
+         this.studentGrade_form.setVisible(false);
+         this.addStudents_btn.setStyle("-fx-background-color:linear-gradient(to bottom right, #3f82ae, #26bf7d);");
+         this.home_btn.setStyle("-fx-background-color:transparent");
+         this.availableCourse_btn.setStyle("-fx-background-color:transparent");
+         this.studentGrade_btn.setStyle("-fx-background-color:transparent");
+         this.addStudentsShowListData();
+         this.addStudentsYearList();
+         this.addStudentsGenderList();
+         this.addStudentsStatusList();
+         this.addStudentsCourseList();
+         this.addStudentsSearch();
+      } else if (event.getSource() == this.availableCourse_btn) {
+         this.home_form.setVisible(false);
+         this.addStudents_form.setVisible(false);
+         this.availableCourse_form.setVisible(true);
+         this.studentGrade_form.setVisible(false);
+         this.availableCourse_btn.setStyle("-fx-background-color:linear-gradient(to bottom right, #3f82ae, #26bf7d);");
+         this.addStudents_btn.setStyle("-fx-background-color:transparent");
+         this.home_btn.setStyle("-fx-background-color:transparent");
+         this.studentGrade_btn.setStyle("-fx-background-color:transparent");
+         this.availableCourseShowListData();
+      } else if (event.getSource() == this.studentGrade_btn) {
+         this.home_form.setVisible(false);
+         this.addStudents_form.setVisible(false);
+         this.availableCourse_form.setVisible(false);
+         this.studentGrade_form.setVisible(true);
+         this.studentGrade_btn.setStyle("-fx-background-color:linear-gradient(to bottom right, #3f82ae, #26bf7d);");
+         this.addStudents_btn.setStyle("-fx-background-color:transparent");
+         this.availableCourse_btn.setStyle("-fx-background-color:transparent");
+         this.home_btn.setStyle("-fx-background-color:transparent");
+         this.studentGradesShowListData();
+         this.studentGradesSearch();
+      }
+
+   }
+
+   public void close() {
+      System.exit(0);
+   }
+
+   public void minimize() {
+      Stage stage = (Stage)this.main_form.getScene().getWindow();
+      stage.setIconified(true);
+   }
+
+   public void initialize(URL location, ResourceBundle resources) {
+      this.displayUsername();
+      this.defaultNav();
+      this.homeDisplayTotalEnrolledStudents();
+      this.homeDisplayMaleEnrolled();
+      this.homeDisplayFemaleEnrolled();
+      this.homeDisplayEnrolledMaleChart();
+      this.homeDisplayFemaleEnrolledChart();
+      this.homeDisplayTotalEnrolledChart();
+      this.addStudentsShowListData();
+      this.addStudentsYearList();
+      this.addStudentsGenderList();
+      this.addStudentsStatusList();
+      this.addStudentsCourseList();
+      this.availableCourseShowListData();
+      this.studentGradesShowListData();
+   }
+}
